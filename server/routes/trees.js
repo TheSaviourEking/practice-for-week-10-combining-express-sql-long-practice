@@ -26,7 +26,7 @@ const db = new sqlite3.Database(
  */
 // Your code here
 router.get('/', (req, res) => {
-    const sql = 'SELECT * FROM trees';
+    const sql = 'SELECT id, tree FROM trees ORDER BY height_ft DESC';
     const params = [];
 
     db.all(sql, params, (err, rows) => {
@@ -68,7 +68,11 @@ router.get('/:id', (req, res) => {
  *   - Value: success
  */
 // Your code here
-
+router.post('/trees', (req, res) => {
+    const sql = `INSERT INTO trees (tree, location, height_ft, ground_circumference_ft)
+                VALUES ()
+    `
+})
 /**
  * INTERMEDIATE PHASE 5 - DELETE a tree row from the database
  *
