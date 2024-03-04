@@ -25,17 +25,17 @@ const db = new sqlite3.Database(
  *   - Ordered by the height_ft from tallest to shortest
  */
 // Your code here
-// router.get('/', (req, res) => {
-//     const sql = 'SELECT * FROM trees';
-//     const params = [];
+router.get('/', (req, res) => {
+    const sql = 'SELECT * FROM trees';
+    const params = [];
 
-//     db.all(sql, params, (err, rows) => {
-//         if (err) next(err);
-//         else {
-//             res.json(rows);
-//         }
-//     });
-// })
+    db.all(sql, params, (err, rows) => {
+        if (err) next(err);
+        else {
+            res.json(rows);
+        }
+    });
+})
 
 /**
  * BASIC PHASE 3 - Retrieve one tree with the matching id
