@@ -25,7 +25,7 @@ const db = new sqlite3.Database(
  *   - Ordered by the height_ft from tallest to shortest
  */
 // Your code here
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
     const sql = 'SELECT id, tree FROM trees ORDER BY height_ft DESC';
     const params = [];
 
@@ -47,7 +47,7 @@ router.get('/', (req, res) => {
  *   - Properties: id, tree, location, height_ft, ground_circumference_ft
  */
 // Your code here
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res, next) => {
     const sql = 'SELECT * FROM trees where id = ?';
     const params = [req.params.id];
     db.get(sql, params, (err, row) => {
@@ -68,7 +68,7 @@ router.get('/:id', (req, res) => {
  *   - Value: success
  */
 // Your code here
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
     const sql = `INSERT INTO trees (tree, location, height_ft, ground_circumference_ft) VALUES (?,?,?,?)`;
     const params = [req.body.name, req.body.location, req.body.height, req.body.size];
     db.run(sql, params, (err) => {
@@ -89,7 +89,7 @@ router.post('/', (req, res) => {
  *   - Value: success
  */
 // Your code here
-router.delete('/:id', (req, res) => {
+router.delete('/:id', (req, res, next) => {
     const sql = 'DELETE FROM trees where id = ?';
     const params = [req.params.id];
     db.run(sql, params, (err) => {
@@ -99,6 +99,7 @@ router.delete('/:id', (req, res) => {
         }
     })
 })
+
 /**
  * INTERMEDIATE PHASE 6 - UPDATE a tree row in the database
  *
@@ -110,6 +111,17 @@ router.delete('/:id', (req, res) => {
  *   - Value: success
  */
 // Your code here
+router.put('/:id', (req, res, next) => {
+    if (Number(req.params.id) !== Number(req.body.id)) res.status(400).json({ error: 'ids do not match' });
+    const sql = `UPDATE trees SET tree = ?, location = ?,height_ft = ?, ground_circumference_ft = ? where id = ?`;
+    const params = [req.body.name, req.body.location, req.body.height, req.body.size, req.body.id];
 
+    db.run(sql, params, (err) => {
+        if (err) next(err);
+        else {
+            res.json({ message: 'success' })
+        }
+    })
+})
 // Export class - DO NOT MODIFY
 module.exports = router;
